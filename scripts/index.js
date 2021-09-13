@@ -7,7 +7,13 @@
 
 
 function playSong(songId) {
-    let song = document.getElementsByClassName()
+    if (document.getElementsByClassName("nowPlaying").length!==0){
+        const previuslyPlayed = document.getElementsByClassName("nowPlaying")
+        previuslyPlayed[0].classList.remove("nowPlaying")
+    }
+    const song = document.getElementById(`song${songId}`)
+    song.classList.add("nowPlaying")
+    return song
 
 }
 /**
@@ -29,7 +35,7 @@ function createSongElement({ id, title, album, artist, duration, coverArt }) {
     }
     ul.appendChild(img)
     children.push(ul)
-    const attrs = { onclick: `playSong(${id})`, id: "song" + id}
+    const attrs = {onclick: `playSong(${id})`}
     return createElement("ul", children, classes, attrs)
 }
 
@@ -141,6 +147,9 @@ function appendSong() {
         const { id, title, album, artist, duration, coverArt } = song
         const newSong = createSongElement(id, title, album, artist, duration, coverArt)
         newSong.classList.add("song" + id)
+        newSong.id = "song" + id
+        let Id = id
+        newSong.onclick = `playSong(${Id})`
         songs.appendChild(newSong)
     })
 } appendSong()

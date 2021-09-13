@@ -32,6 +32,7 @@ img {
 .playlists {
     width: 534px;
     height: 40px;
+    display: inline-block;
 }
 
 #songs, #playlists{
