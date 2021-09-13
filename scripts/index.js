@@ -21,9 +21,9 @@ function playSong(songId) {
  */
 function createSongElement({ id, title, album, artist, duration, coverArt }) {
     const titleEl = createElement("h3",[title],["text"])
-    const artistEl = createElement("h5", [" Artist: " + artist],["text"]);
-    const albumEl = createElement("h5", [" Album: " + album],["text"]);
-    const durationEl = createElement("h5", [" " + convertDuration(duration)] ,["duration","text"], {});
+    const artistEl = createElement("h5", [` Artist: ${artist}`],["text"]);
+    const albumEl = createElement("h5", [` Album: ${album}`],["text"]);
+    const durationEl = createElement("h5", [" " + convertDuration(duration)] ,[durationClass(duration),"text"], {});
 
     const coverImageArtUrl = coverArt;
     const imgEl = createElement("img", [] ,["album-art"], {src: coverImageArtUrl});
@@ -114,3 +114,22 @@ for (let playlist of player.playlists) {
     getPlaylist.appendChild(playlistEl)
 
 }
+
+function durationClass(num) {
+  if (num < 120) return "small-dration";
+  else if (num > 120 || num < 420) return "medium-dration";
+  else if (num > 420) return "high-dration"
+}
+
+const body = document.body
+const firstChild = body.firstChild;
+const header = document.createElement("h1")
+header.textContent = `🎵 MP3 Player 🎵`
+const songsHeader = document.createElement("h2")
+songsHeader.textContent = "songs:"
+const playlistHeader = document.createElement("h2")
+playlistHeader.textContent = "playlists: "
+const playlists = document.getElementById("playlists")
+body.insertBefore(header, firstChild)
+body.insertBefore(songsHeader, firstChild)
+body.insertBefore(playlistHeader,playlists)
