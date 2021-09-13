@@ -1,23 +1,11 @@
-/* .continerSongs {
-    text-align: center;
-    margin: auto;
-    border: 2px solid blanchedalmond;
-    width: 534px;
-    height: 153px;
-    margin-top: 10px;
-    font-size: large;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-} */
+
 @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
 
 body {
     text-align: center;
     font-family: 'Nunito', sans-serif;
 }
-img {
+ img {
     height: 92px;
     border-radius: 50%;
     -moz-box-shadow: 0px 6px 5px #ccc;
@@ -26,33 +14,42 @@ img {
     -moz-border-radius:190px;
     -webkit-border-radius:190px;
     border-radius:190px;
-    float: right
+}
+.songs {
+    height: 287px;
+    width: 500px;
+    text-align: center;
+    border: solid 2px;
+    margin-top: 20px;
+    border-radius: 20px;
+    margin: auto;
+}
+
+.playing {
+    border:solid 2px springgreen;
 }
 
 .playlists {
-    width: 534px;
-    height: 40px;
-    display: inline-block;
-}
-
-#songs, #playlists{
-    width:50%;
+    width: 500px;
+    height: 100px;
+    border: solid 2px;
+    border-radius: 20px;
     margin: auto;
-    background-color: rgba(231, 231, 231, 0.74);
-    border-radius: 10px;
-    padding: 10px;
 }
 
-.song {
-    border-bottom: white 3px;
+div {
+    margin-top: 10px;
 }
 
-
-ul{
-    overflow:hidden;
-    }
-li{
-    display:inline-block;
-    margin-top: 30px;
+.text {
+    white-space: nowrap;
 }
 
+.songs > .text {
+    text-align: left;
+    margin-left: 10px;
+}
+
+.songs> img {
+    align-items: flex-start;
+}
