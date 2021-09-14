@@ -24,6 +24,7 @@ body {
     border-radius: 20px;
     margin: 7px;
     display: inline-block;
+    position: relative;
 }
 
 .playing {
@@ -61,4 +62,22 @@ div {
 .medium-dration {
     color: rgb(221, 76, 76);
     
+}
+
+.remove-button {
+    position:absolute;
+    right: 10px;
+    bottom: 10px;
+}
+
+#inputs, #add-button{
+    display:none;
+}
+
+#right-arr {
+    display: inline;
+}
+
+#down-arr {
+    display: none;
 }
