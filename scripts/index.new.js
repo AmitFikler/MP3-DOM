@@ -5,7 +5,8 @@
  * @param {Number} songId - the ID of the song to play
  */
 function playSong(songId) {
-    // Your code here
+    const x = document.getElementById(songId+"song")
+        x.classList.toggle('playing')
 }
 
 /**
@@ -21,7 +22,9 @@ function removeSong(songId) {
  * Adds a song to the player, and updates the DOM to match.
  */
 function addSong({ title, album, artist, duration, coverArt }) {
-    // Your code here
+    const song = {
+    }
+
 }
 
 /**
@@ -40,9 +43,11 @@ function handleSongClickEvent(event) {
  * @param {MouseEvent} event - the click event
  */
 function handleAddSongEvent(event) {
-    addSongText.addEventListener("click",openAddBar);
-    
+    // addSongText.addEventListener(event,openAddBar);
+    // addBtn.addEventListener(event, addToSongsArray);
+    // addBtn.addEventListener(event,songAdded);
 }
+// handleAddSongEvent("click")
 
 /**
  * Creates a song DOM element based on a song object.
@@ -112,9 +117,20 @@ return el;
  */
 const getSong = document.getElementById('songs')
 function generateSongs() {
+    player.songs.sort((a,b) => (a.title>b.title) ? 1 : -1)
+    for (let song of player.songs) { 
+        const songEl = createSongElement(song)
+        addButton(songEl)
+        getSong.appendChild(songEl)
+    
+    }
+}
+function removeSongs() {
+    player.songs.sort((a,b) => (a.title>b.title) ? 1 : -1)
     for (let song of player.songs) { 
         const songEl = createSongElement(song)
         getSong.appendChild(songEl)
+        songEl.remove()
     
     }
 }
@@ -169,18 +185,6 @@ function durationClass(num) {
   else if (num > 420) return "high-dration"
 }
 
-// const body = document.body
-// const firstChild = body.firstChild;
-// const header = document.createElement("h1")
-// header.textContent = `🎵 MP3 Player 🎵`
-// const songsHeader = document.createElement("h2")
-// songsHeader.textContent = "songs:"
-// const playlistHeader = document.createElement("h2")
-// playlistHeader.textContent = "playlists: "
-// const playlists = document.getElementById("playlists")
-// body.insertBefore(header, firstChild)
-// body.insertBefore(songsHeader, firstChild)
-// body.insertBefore(playlistHeader,playlists)
 
 // let a = prompt("what is your name?")
 // let header = document.getElementById("header")
@@ -189,13 +193,43 @@ function durationClass(num) {
 
 let panes  = document.querySelectorAll(".songs")
 
-function trash(song) {
-    song.insertAdjacentHTML("afterbegin", '<span class="remove-button">🗑️</span>');
+function playBtn(song) {
+    song.insertAdjacentHTML("afterbegin", '<div class="start-stop-delete" id="start-button">▶️</div>');
+    song.insertAdjacentHTML("afterbegin", '<div class="start-stop-delete" id="pause-button">⏸️</div>');
+}
+
+const startButton = document.getElementById("start-button")
+const pauseButton = document.getElementById("pause-button")
+
+startButton.addEventListener('click', playToPause)
+pauseButton.addEventListener("click",pauseToStart)
+
+function playToPause() {
+    if (startButton.style.display === "inline") {
+        startButton.style.display = "none";
+        pauseButton.style.display = "inline";
+    } else {
+        startButton.style.display = "inline";
+        pauseButton.style.display = "none";
+    }
+}
+function pauseToStart() {
+    if (pauseButton.style.display === "inline") {
+        startButton.style.display = "inline";
+        pauseButton.style.display = "none";
+    } else {
+        startButton.style.display = "none";
+        pauseButton.style.display = "inline";
+    }
+}
+function trashBtn(song) {
+    song.insertAdjacentHTML("afterbegin", '<div class="start-stop-delete" id="remove-button">🗑️</div>');
     song.firstChild.onclick = () => song.remove();
 
 }
-for (let pane of panes) {
-    trash(pane)
+function addButton(song){
+    playBtn(song)
+    trashBtn(song)
 }
 
 const addSongText = document.getElementById("add-song-header")
@@ -204,39 +238,34 @@ const downArr = document.getElementById("down-arr")
 const inputs = document.getElementById("inputs")
 const addBtn = document.getElementById("add-button")
 const songHeader = document.getElementById("songs")
-
+const addSection = document.getElementById("add-section")
 
 
 
 addSongText.addEventListener("click",openAddBar);
 function openAddBar() {
-    if (rightArr.style.display === "inline") {
-        rightArr.style.display = "none"
-        downArr.style.display = "inline"
-        inputs.style.display = "inline"
-        addBtn.style.display= "inline"
-    }else {
-        rightArr.style.display = "inline"
-        downArr.style.display = "none"
-        inputs.style.display = "none"
-        addBtn.style.display= "none"
-    }
+    addSection.classList.toggle('open')
 }
+
+
 
 addBtn.addEventListener("click", addToSongsArray);
 function addToSongsArray(e) {
     const newSong = {
         id: "",
-        title: document.getElementById('title').value,
-        album: document.getElementById('album').value,
-        artist: document.getElementById('artist').value,
-        duration: document.getElementById('duration').value,
-        coverArt: document.getElementById('cover-art').value
+        title: getInputValueOf("title"),
+        album: getInputValueOf("album"),
+        artist: getInputValueOf("artist"),
+        duration: mmssToSeconds(getInputValueOf("duration")),
+        coverArt: getInputValueOf("cover-art")
     }
-    const createSong = createSongElement(newSong);
-    getSong.appendChild(createSong);
-    trash(createSong)
-    
+    const createdSong = createSongElement(newSong);
+    getSong.appendChild(createdSong);
+    addButton(createdSong)
+}
+
+function getInputValueOf(id) {
+    return document.getElementById(id).value
 }
 
 addBtn.addEventListener("click",songAdded);
@@ -250,6 +279,13 @@ function songAdded() {
         songAddedText.remove()},2200)
     
 }
+
+
+function mmssToSeconds(mmss) { //Convert MM:SS string to seconds
+    let splitMmSs = mmss.split(':');
+    let seconds = (+splitMmSs[0]) * 60 + (+splitMmSs[1]);
+    return seconds;
+  }
 
 
 

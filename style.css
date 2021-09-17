@@ -64,20 +64,58 @@ div {
     
 }
 
-.remove-button {
+#remove-button {
     position:absolute;
     right: 10px;
     bottom: 10px;
+    cursor: pointer;
 }
 
-#inputs, #add-button{
-    display:none;
-}
-
-#right-arr {
-    display: inline;
-}
-
-#down-arr {
+#pause-button {
+    position:absolute;
+    right: 37px;
+    bottom: 10px;
     display: none;
+    cursor: pointer;
 }
+
+#start-button {
+    position:absolute;
+    right: 39px;
+    bottom: 10px;
+    display: inline;
+    cursor: pointer;;
+}
+
+
+.start-stop-delete {
+    font-size: 19px;
+}
+
+#add-section .add-song{
+    margin: auto;
+    list-style: none;
+    display: none;
+    margin-top: 3px;
+    border-radius: 4px;
+}
+
+#add-section #add-song-header {
+    cursor: pointer;
+}
+
+#add-section #add-song-header::before {
+    content: '➡️ ';
+    font-size: 80%;
+}
+
+#add-section.open #add-song-header::before {
+    content: '⬇️ ';
+}
+
+#add-section.open .add-song {
+    display: block;
+}
+
+
+
