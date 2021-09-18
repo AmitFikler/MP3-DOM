@@ -32,9 +32,7 @@ body {
 }
 
 .playing {
-    border:solid 4px rgba(16, 94, 0, 0.137);
-    width: 320px;
-    height: 300px;
+    border:solid 4px rgb(43, 255, 0);
 }
 
 .playlists {
@@ -64,8 +62,16 @@ div {
 }
 
 .medium-dration {
-    color: rgb(221, 76, 76);
+    color: rgb(182, 0, 0);
     
+}
+
+.small-dration {
+    color:lime;
+}
+
+.high-dration {
+    color: red;
 }
 
 .remove-btn {
@@ -120,6 +126,7 @@ div {
 #add-section.open .add-song {
     display: block;
 }
+
 
 
 

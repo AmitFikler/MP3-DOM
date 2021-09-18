@@ -8,10 +8,10 @@ function playSong(songId) {
     const element = document.querySelectorAll('.songs');
     for (let i of element) {
         if (i.classList.contains("playing")) {
-            i.classList.remove("playing")
+            i.classList.remove("playing");
     }
-    const x = document.getElementById(songId)
-    x.classList.add("playing")
+    const x = document.getElementById(songId);
+    x.classList.add("playing");
     }
 }
 
@@ -22,11 +22,8 @@ function playSong(songId) {
  * @param {Number} songId - the ID of the song to remove
  */
 function removeSong(songId) {
-    const thisSong = document.getElementById(songId)
-    thisSong.remove()
-
-    // const removeIndexSongs = player.songs.findIndex( item => item.id === songId );
-    // player.songs.splice( removeIndexSongs, 1 ); //remove from songs 
+    const thisSong = document.getElementById(songId);
+    thisSong.remove();
 }
 
 
@@ -53,11 +50,14 @@ function addSong({ title, album, artist, duration, coverArt }) {
  */
 function handleSongClickEvent(event) {
     if (event.target.innerText === "🗑️") {
-        removeSong(this.id)
-
+        removeSong(this.id);
     }
     if (event.target.innerText === "▶️"){
-        playSong(this.id)
+        event.target.innerText = "⏸️"
+        playSong(this.id);
+    } else if (event.target.innerText === "⏸️") {
+        document.getElementById(this.id).classList.remove("playing");
+        event.target.innerText = "▶️";
     }
 }
 
@@ -72,7 +72,7 @@ function handleSongClickEvent(event) {
  *
  * @param {MouseEvent} event - the click event
  */
-function handleAddSongEvent(event) {   //FINISH!!!!
+function handleAddSongEvent(event) {   
     const newSong = {
         id: generateId(getListOfId()),
         title: getInputValueOf("title"),
@@ -80,18 +80,18 @@ function handleAddSongEvent(event) {   //FINISH!!!!
         artist: getInputValueOf("artist"),
         duration: mmssToSeconds(getInputValueOf("duration")),
         coverArt: getInputValueOf("cover-art")
-    }
-    player.songs.push(newSong)
+    };
+    player.songs.push(newSong);
     const createdSong = createSongElement(newSong);
     getSong.appendChild(createdSong);
     attachingButtonsToSong(createdSong);
     createdSong.addEventListener("click",handleSongClickEvent);
-    const songAddedText = document.createElement("div")
-    songAddedText.textContent = "The song was successfully added"
-    songAddedText.style.color = "green"
-    document.body.insertBefore(songAddedText,songHeader)
+    const songAddedText = document.createElement("div");
+    songAddedText.textContent = "The song was successfully added";
+    songAddedText.style.color = "green";
+    document.body.insertBefore(songAddedText,songHeader);
     setTimeout(function(){
-        songAddedText.remove()},2200)
+        songAddedText.remove()},2200);
     
 }
 
@@ -99,7 +99,7 @@ function handleAddSongEvent(event) {   //FINISH!!!!
  * Creates a song DOM element based on a song object.
  */
  function createSongElement({ id, title, album, artist, duration, coverArt }) {
-    const titleEl = createElement("h3",[title],["text"])
+    const titleEl = createElement("h3",[title],["text"]);
     const artistEl = createElement("h5", [` Artist: ${artist}`],["text"]);
     const albumEl = createElement("h5", [` Album: ${album}`],["text"]);
     const durationEl = createElement("h5", [" " + convertDuration(duration)] ,[durationClass(duration),"text"], {});
@@ -113,9 +113,9 @@ function handleAddSongEvent(event) {   //FINISH!!!!
  * Creates a playlist DOM element based on a playlist object.
  */
  function createPlaylistElement({ id, name, songs }) {
-    const nameEl = createElement("h3", ["album: " + name], ["album"])
-    const songsEl = createElement("h5", [convertDuration(playlistDuration(id))])
-    return createElement("div", [nameEl, songsEl],["playlists"],{id: "playlist" + id})
+    const nameEl = createElement("h3", ["album: " + name], ["album"]);
+    const songsEl = createElement("h5", [convertDuration(playlistDuration(id))]);
+    return createElement("div", [nameEl, songsEl],["playlists"],{id: "playlist" + id});
 }
 
 /**
@@ -162,12 +162,11 @@ return el;
  */
 // const getSong = document.getElementById('songs')
 function generateSongs() {
-    player.songs.sort((a,b) => (a.title>b.title) ? 1 : -1)
     for (let song of player.songs) { 
-        const songEl = createSongElement(song)
-        songEl.addEventListener("click", handleSongClickEvent)
-        attachingButtonsToSong(songEl)
-        getSong.appendChild(songEl)
+        const songEl = createSongElement(song);
+        songEl.addEventListener("click", handleSongClickEvent);
+        attachingButtonsToSong(songEl);
+        getSong.appendChild(songEl);
     
     }
 }
@@ -177,19 +176,19 @@ function generateSongs() {
  */
 function generatePlaylists() {
     for (let playlist of player.playlists) {
-        const getPlaylist = document.getElementById('playlists')
-        const playlistEl = createPlaylistElement(playlist)
-        getPlaylist.appendChild(playlistEl)
+        const getPlaylist = document.getElementById('playlists');
+        const playlistEl = createPlaylistElement(playlist);
+        getPlaylist.appendChild(playlistEl);
     
     }    
 }
 
 // Creating the page structure
-generateSongs()
-generatePlaylists()
+generateSongs();
+generatePlaylists();
 
 // Making the add-song-button actually do something
-document.getElementById("add-button").addEventListener("click", handleAddSongEvent)
+document.getElementById("add-button").addEventListener("click", handleAddSongEvent);
 
 
 function convertDuration(num) { //Converts seconds to MM:SS format
@@ -218,14 +217,14 @@ function playlistDuration(id) {  // A function that returns the duration of all 
 
 function durationClass(num) {
   if (num < 180) return "small-dration";
-  else if (num > 180 || num < 420) return "medium-dration";
+  else if (num > 180 && num < 420) return "medium-dration";
   else if (num > 420) return "high-dration"
 }
 
 
-// let a = prompt("what is your name?")
-// let header = document.getElementById("header")
-// header.textContent = `🎵 ${a} player! 🎵`
+let userName = prompt("what is your name?")
+let header = document.getElementById("header")
+header.textContent = `🎵 ${userName}\`s player! 🎵`
 
 
 function playBtn(song) {
@@ -241,20 +240,20 @@ function attachingButtonsToSong(song){
     trashBtn(song)
 }
 
-const addSongText = document.getElementById("add-song-header")
-const songHeader = document.getElementById("songs")
-const addSection = document.getElementById("add-section")
+const addSongText = document.getElementById("add-song-header");
+const songHeader = document.getElementById("songs");
+const addSection = document.getElementById("add-section");
 
 
 
 addSongText.addEventListener("click",openAddBar); //open add song navbar
 function openAddBar() {
-    addSection.classList.toggle('open')
+    addSection.classList.toggle('open');
 }
 
 
 function getInputValueOf(id) {
-    return document.getElementById(id).value
+    return document.getElementById(id).value;
 }
 
 function mmssToSeconds(mmss) { //Convert MM:SS string to seconds
@@ -272,6 +271,7 @@ function generateId(arr) {  //If the user does not give Id, the function produce
 }
 
 function getListOfId() {
-    const Idlist = player.songs.map(x => x["id"])
-    return Idlist
+    const Idlist = player.songs.map(x => x["id"]);
+    return Idlist;
 }
+
