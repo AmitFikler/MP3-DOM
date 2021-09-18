@@ -1,1 +1,132 @@
-/* Your code here */
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
+body {
+    text-align: center;
+    font-family: 'Nunito', sans-serif;
+    background-color: rgba(240, 235, 235, 0.411);
+}
+ img {
+    height: 92px;
+    border-radius: 50%;
+    -moz-box-shadow: 0px 6px 5px #ccc;
+    -webkit-box-shadow: 0px 6px 5px #ccc;
+    box-shadow: 0px 6px 5px #ccc;
+    -moz-border-radius:190px;
+    -webkit-border-radius:190px;
+    border-radius:190px;
+}
+.songs {
+    height: 287px;
+    width: 300px;
+    text-align: center;
+    border: solid 2px;
+    border-radius: 20px;
+    margin: 7px;
+    display: inline-block;
+    position: relative;
+}
+.songs:hover {
+    box-shadow: 8px 8px 5px grey;
+
+}
+
+.playing {
+    border:solid 4px rgb(43, 255, 0);
+}
+
+.playlists {
+    width: 300px;
+    height: 100px;
+    border: solid 2px;
+    border-radius: 20px;
+    margin: 7px;
+    display: inline-block;
+}
+
+div {
+    margin-top: 10px;
+}
+
+.text {
+    white-space: nowrap;
+}
+
+.songs > .text {
+    text-align: left;
+    margin-left: 10px;
+}
+
+.songs> img {
+    align-items: flex-start;
+}
+
+.medium-dration {
+    color: rgb(182, 0, 0);
+    
+}
+
+.small-dration {
+    color:lime;
+}
+
+.high-dration {
+    color: red;
+}
+
+.remove-btn {
+    position:absolute;
+    right: 10px;
+    bottom: 10px;
+    cursor: pointer;
+}
+
+.stop-btn {
+    position:absolute;
+    right: 37px;
+    bottom: 10px;
+    display: none;
+    cursor: pointer;
+}
+
+.start-btn {
+    position:absolute;
+    right: 39px;
+    bottom: 10px;
+    display: inline;
+    cursor: pointer;;
+}
+
+
+.start-stop-delete {
+    font-size: 19px;
+}
+
+#add-section .add-song{
+    margin: auto;
+    list-style: none;
+    display: none;
+    margin-top: 3px;
+    border-radius: 4px;
+}
+
+#add-section #add-song-header {
+    cursor: pointer;
+}
+
+#add-section #add-song-header::before {
+    content: '➡️ ';
+    font-size: 80%;
+}
+
+#add-section.open #add-song-header::before {
+    content: '⬇️ ';
+}
+
+#add-section.open .add-song {
+    display: block;
+}
+
+
+
+
