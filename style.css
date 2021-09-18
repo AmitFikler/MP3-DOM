@@ -68,14 +68,14 @@ div {
     
 }
 
-#remove-button {
+.remove-btn {
     position:absolute;
     right: 10px;
     bottom: 10px;
     cursor: pointer;
 }
 
-#pause-button {
+.stop-btn {
     position:absolute;
     right: 37px;
     bottom: 10px;
@@ -83,7 +83,7 @@ div {
     cursor: pointer;
 }
 
-#start-button {
+.start-btn {
     position:absolute;
     right: 39px;
     bottom: 10px;

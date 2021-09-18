@@ -5,12 +5,14 @@
  * @param {Number} songId - the ID of the song to play
  */
 function playSong(songId) {
-    const elements = document.querySelectorAll('.songs');
-    for (let elem of elements) {
-            elem.classList.remove("playing")
+    const element = document.querySelectorAll('.songs');
+    for (let i of element) {
+        if (i.classList.contains("playing")) {
+            i.classList.remove("playing")
     }
-    const x = document.getElementById(`${songId}song`)
-    x.classList.add('playing')
+    const x = document.getElementById(songId)
+    x.classList.add("playing")
+    }
 }
 
 
@@ -20,7 +22,7 @@ function playSong(songId) {
  * @param {Number} songId - the ID of the song to remove
  */
 function removeSong(songId) {
-    const thisSong = document.getElementById(`${songId}song`)
+    const thisSong = document.getElementById(songId)
     thisSong.remove()
 
     // const removeIndexSongs = player.songs.findIndex( item => item.id === songId );
@@ -37,7 +39,7 @@ function addSong({ title, album, artist, duration, coverArt }) {
     const newSong = {title, album, artist, duration, coverArt}
     const createdSong = createSongElement(newSong);
     getSong.appendChild(createdSong);
-    addButton(createdSong)
+    attachingButtonsToSong(createdSong)
 }
 
 
@@ -50,15 +52,27 @@ function addSong({ title, album, artist, duration, coverArt }) {
  * @param {MouseEvent} event - the click event
  */
 function handleSongClickEvent(event) {
+    if (event.target.innerText === "🗑️") {
+        removeSong(this.id)
 
+    }
+    if (event.target.innerText === "▶️"){
+        playSong(this.id)
+    }
 }
+
+
+
+
+
+
 
 /**
  * Handles a click event on the button that adds songs.
  *
  * @param {MouseEvent} event - the click event
  */
-function handleAddSongEvent(event) { 
+function handleAddSongEvent(event) {   //FINISH!!!!
     const newSong = {
         id: generateId(getListOfId()),
         title: getInputValueOf("title"),
@@ -70,7 +84,8 @@ function handleAddSongEvent(event) {
     player.songs.push(newSong)
     const createdSong = createSongElement(newSong);
     getSong.appendChild(createdSong);
-    addButton(createdSong)
+    attachingButtonsToSong(createdSong);
+    createdSong.addEventListener("click",handleSongClickEvent);
     const songAddedText = document.createElement("div")
     songAddedText.textContent = "The song was successfully added"
     songAddedText.style.color = "green"
@@ -88,11 +103,10 @@ function handleAddSongEvent(event) {
     const artistEl = createElement("h5", [` Artist: ${artist}`],["text"]);
     const albumEl = createElement("h5", [` Album: ${album}`],["text"]);
     const durationEl = createElement("h5", [" " + convertDuration(duration)] ,[durationClass(duration),"text"], {});
-
     const coverImageArtUrl = coverArt;
     const imgEl = createElement("img", [] ,["album-art"], {src: coverImageArtUrl});
 
-    return createElement("div", [titleEl , artistEl,albumEl, durationEl, imgEl],["songs"],{ onclick: `playSong(${id})`, id: id + "song"});
+    return createElement("div", [titleEl , artistEl,albumEl, durationEl, imgEl],["songs"],{id: id + "song"});
 }
 
 /**
@@ -151,7 +165,8 @@ function generateSongs() {
     player.songs.sort((a,b) => (a.title>b.title) ? 1 : -1)
     for (let song of player.songs) { 
         const songEl = createSongElement(song)
-        addButton(songEl)
+        songEl.addEventListener("click", handleSongClickEvent)
+        attachingButtonsToSong(songEl)
         getSong.appendChild(songEl)
     
     }
@@ -213,56 +228,26 @@ function durationClass(num) {
 // header.textContent = `🎵 ${a} player! 🎵`
 
 
-let panes  = document.querySelectorAll(".songs")
-
 function playBtn(song) {
-    song.insertAdjacentHTML("afterbegin", '<div class="start-stop-delete" id="start-button">▶️</div>');
-    song.insertAdjacentHTML("afterbegin", '<div class="start-stop-delete" id="pause-button">⏸️</div>');
+    song.insertAdjacentHTML("afterbegin", '<div class="start-btn start-stop-delete">▶️</div>');
+    song.insertAdjacentHTML("afterbegin", '<div class="stop-btn start-stop-delete">⏸️</div>');
 }
 
-const startButton = document.getElementById("start-button")
-const pauseButton = document.getElementById("pause-button")
-
-startButton.addEventListener('click', playToPause)
-pauseButton.addEventListener("click",pauseToStart)
-
-function playToPause() {
-    if (startButton.style.display === "inline") {
-        startButton.style.display = "none";
-        pauseButton.style.display = "inline";
-    } else {
-        startButton.style.display = "inline";
-        pauseButton.style.display = "none";
-    }
-}
-function pauseToStart() {
-    if (pauseButton.style.display === "inline") {
-        startButton.style.display = "inline";
-        pauseButton.style.display = "none";
-    } else {
-        startButton.style.display = "none";
-        pauseButton.style.display = "inline";
-    }
-}
 function trashBtn(song) {
-    song.insertAdjacentHTML("afterbegin", '<div class="start-stop-delete" id="remove-button">🗑️</div>');
+    song.insertAdjacentHTML("afterbegin", '<div class="remove-btn start-stop-delete">🗑️</div>');
 }
-function addButton(song){
+function attachingButtonsToSong(song){
     playBtn(song)
     trashBtn(song)
 }
 
 const addSongText = document.getElementById("add-song-header")
-// const rightArr = document.getElementById("right-arr")
-// const downArr = document.getElementById("down-arr")
-// const inputs = document.getElementById("inputs")
-// const addBtn = document.getElementById("add-button")
 const songHeader = document.getElementById("songs")
 const addSection = document.getElementById("add-section")
 
 
 
-addSongText.addEventListener("click",openAddBar);
+addSongText.addEventListener("click",openAddBar); //open add song navbar
 function openAddBar() {
     addSection.classList.toggle('open')
 }
@@ -289,8 +274,4 @@ function generateId(arr) {  //If the user does not give Id, the function produce
 function getListOfId() {
     const Idlist = player.songs.map(x => x["id"])
     return Idlist
-}
-
-for (let play of document.querySelectorAll("#start-button")) {
-    play.addEventListener("click",handleSongClickEvent)
 }
