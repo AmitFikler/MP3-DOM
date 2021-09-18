@@ -5,9 +5,14 @@
  * @param {Number} songId - the ID of the song to play
  */
 function playSong(songId) {
-    const x = document.getElementById(songId+"song")
-        x.classList.toggle('playing')
+    const elements = document.querySelectorAll('.songs');
+    for (let elem of elements) {
+            elem.classList.remove("playing")
+    }
+    const x = document.getElementById(`${songId}song`)
+    x.classList.add('playing')
 }
+
 
 /**
  * Removes a song from the player, and updates the DOM to match.
@@ -15,17 +20,28 @@ function playSong(songId) {
  * @param {Number} songId - the ID of the song to remove
  */
 function removeSong(songId) {
-    // Your code here
+    const thisSong = document.getElementById(`${songId}song`)
+    thisSong.remove()
+
+    // const removeIndexSongs = player.songs.findIndex( item => item.id === songId );
+    // player.songs.splice( removeIndexSongs, 1 ); //remove from songs 
 }
+
+
 
 /**
  * Adds a song to the player, and updates the DOM to match.
  */
+const getSong = document.getElementById('songs')
 function addSong({ title, album, artist, duration, coverArt }) {
-    const song = {
-    }
-
+    const newSong = {title, album, artist, duration, coverArt}
+    const createdSong = createSongElement(newSong);
+    getSong.appendChild(createdSong);
+    addButton(createdSong)
 }
+
+
+
 
 /**
  * Acts on a click event on an element inside the songs list.
@@ -34,7 +50,7 @@ function addSong({ title, album, artist, duration, coverArt }) {
  * @param {MouseEvent} event - the click event
  */
 function handleSongClickEvent(event) {
-    // Your code here
+
 }
 
 /**
@@ -42,12 +58,27 @@ function handleSongClickEvent(event) {
  *
  * @param {MouseEvent} event - the click event
  */
-function handleAddSongEvent(event) {
-    // addSongText.addEventListener(event,openAddBar);
-    // addBtn.addEventListener(event, addToSongsArray);
-    // addBtn.addEventListener(event,songAdded);
+function handleAddSongEvent(event) { 
+    const newSong = {
+        id: generateId(getListOfId()),
+        title: getInputValueOf("title"),
+        album: getInputValueOf("album"),
+        artist: getInputValueOf("artist"),
+        duration: mmssToSeconds(getInputValueOf("duration")),
+        coverArt: getInputValueOf("cover-art")
+    }
+    player.songs.push(newSong)
+    const createdSong = createSongElement(newSong);
+    getSong.appendChild(createdSong);
+    addButton(createdSong)
+    const songAddedText = document.createElement("div")
+    songAddedText.textContent = "The song was successfully added"
+    songAddedText.style.color = "green"
+    document.body.insertBefore(songAddedText,songHeader)
+    setTimeout(function(){
+        songAddedText.remove()},2200)
+    
 }
-// handleAddSongEvent("click")
 
 /**
  * Creates a song DOM element based on a song object.
@@ -106,7 +137,7 @@ function createElement(tagName, children = [], classes = [], attributes = {}, ev
 
   // Eventlistners
   for (e in eventListeners) {
-      el.setAttribute(e,eventListeners[e])
+      el.addEventListener(e,eventListeners[e])
   }
 
 return el;
@@ -115,22 +146,13 @@ return el;
 /**
  * Inserts all songs in the player as DOM elements into the songs list.
  */
-const getSong = document.getElementById('songs')
+// const getSong = document.getElementById('songs')
 function generateSongs() {
     player.songs.sort((a,b) => (a.title>b.title) ? 1 : -1)
     for (let song of player.songs) { 
         const songEl = createSongElement(song)
         addButton(songEl)
         getSong.appendChild(songEl)
-    
-    }
-}
-function removeSongs() {
-    player.songs.sort((a,b) => (a.title>b.title) ? 1 : -1)
-    for (let song of player.songs) { 
-        const songEl = createSongElement(song)
-        getSong.appendChild(songEl)
-        songEl.remove()
     
     }
 }
@@ -224,8 +246,6 @@ function pauseToStart() {
 }
 function trashBtn(song) {
     song.insertAdjacentHTML("afterbegin", '<div class="start-stop-delete" id="remove-button">🗑️</div>');
-    song.firstChild.onclick = () => song.remove();
-
 }
 function addButton(song){
     playBtn(song)
@@ -233,10 +253,10 @@ function addButton(song){
 }
 
 const addSongText = document.getElementById("add-song-header")
-const rightArr = document.getElementById("right-arr")
-const downArr = document.getElementById("down-arr")
-const inputs = document.getElementById("inputs")
-const addBtn = document.getElementById("add-button")
+// const rightArr = document.getElementById("right-arr")
+// const downArr = document.getElementById("down-arr")
+// const inputs = document.getElementById("inputs")
+// const addBtn = document.getElementById("add-button")
 const songHeader = document.getElementById("songs")
 const addSection = document.getElementById("add-section")
 
@@ -248,38 +268,9 @@ function openAddBar() {
 }
 
 
-
-addBtn.addEventListener("click", addToSongsArray);
-function addToSongsArray(e) {
-    const newSong = {
-        id: "",
-        title: getInputValueOf("title"),
-        album: getInputValueOf("album"),
-        artist: getInputValueOf("artist"),
-        duration: mmssToSeconds(getInputValueOf("duration")),
-        coverArt: getInputValueOf("cover-art")
-    }
-    const createdSong = createSongElement(newSong);
-    getSong.appendChild(createdSong);
-    addButton(createdSong)
-}
-
 function getInputValueOf(id) {
     return document.getElementById(id).value
 }
-
-addBtn.addEventListener("click",songAdded);
-
-function songAdded() {
-    const songAddedText = document.createElement("div")
-    songAddedText.textContent = "The song was successfully added"
-    songAddedText.style.color = "green"
-    document.body.insertBefore(songAddedText,songHeader)
-    setTimeout(function(){ 
-        songAddedText.remove()},2200)
-    
-}
-
 
 function mmssToSeconds(mmss) { //Convert MM:SS string to seconds
     let splitMmSs = mmss.split(':');
@@ -289,3 +280,17 @@ function mmssToSeconds(mmss) { //Convert MM:SS string to seconds
 
 
 
+function generateId(arr) {  //If the user does not give Id, the function produces independently.
+    newArrId = arr.slice();
+    newArrId.sort((a,b) => a-b);
+    return newArrId[newArrId.length - 1] + 1;
+}
+
+function getListOfId() {
+    const Idlist = player.songs.map(x => x["id"])
+    return Idlist
+}
+
+for (let play of document.querySelectorAll("#start-button")) {
+    play.addEventListener("click",handleSongClickEvent)
+}

@@ -26,9 +26,13 @@ body {
     display: inline-block;
     position: relative;
 }
+.songs:hover {
+    box-shadow: 8px 8px 5px grey;
+
+}
 
 .playing {
-    border:solid 4px rgb(101, 255, 178);
+    border:solid 4px rgba(16, 94, 0, 0.137);
     width: 320px;
     height: 300px;
 }
